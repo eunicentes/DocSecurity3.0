@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+  <h2>Inscription</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">S'inscrire</button>
+  </form>
+  {% for message in messages %}
+    <div class="alert alert-success mt-3">{{ message }}</div>
+  {% endfor %}
+</div>
+{% endblock %}

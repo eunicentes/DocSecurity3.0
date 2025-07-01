@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+    <h2 class="mb-4 text-center">Bienvenue, {{ user.username }}</h2>
+
+    {% if message %}
+    <div class="alert alert-success">{{ message }}</div>
+    {% endif %}
+
+    <div class="card p-4 shadow-sm">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label">Choisir un fichier (PDF, image...)</label>
+                <input type="file" name="fichier" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Envoyer et sécuriser</button>
+        </form>
+    </div>
+
+    {% if qr_image %}
+    <div class="mt-4 text-center">
+        <h5>QR Code du document :</h5>
+        <img src="/{{ qr_image }}" alt="QR Code" style="max-width: 200px;">
+    </div>
+    {% endif %}
+
+    <div class="mt-4 text-end">
+        <p><strong>Documents envoyés :</strong> {{ nb_envoyes }}</p>
+    </div>
+</div>
+{% endblock %}
