@@ -330,7 +330,6 @@ def confirm_profile_password(request):
     return render(request, 'core/confirm_password.html')
 
 @login_required
-@login_required
 def user_profile(request):
     if not request.session.get('profile_password_verified'):
         return redirect('confirm_profile_password')
