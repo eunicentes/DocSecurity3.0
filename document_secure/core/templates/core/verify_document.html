@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Vérification de document PDF</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+    <h2 class="text-center mb-4">🔐 Vérification de l'intégrité d'un document PDF</h2>
+
+    {% if message %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endif %}
+    {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+
+    <!-- FORMULAIRE 1 : Déchiffrement de la clé AES -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">1️⃣ Déchiffrer la clé AES avec la clé privée RSA</div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="decrypt_aes">
+
+                <div class="mb-3">
+                    <label for="rsa_private_key" class="form-label">Clé privée RSA (PEM)</label>
+                    <textarea name="rsa_private_key" id="rsa_private_key" class="form-control" rows="5" required></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="encrypted_aes_key" class="form-label">Clé AES chiffrée (Base64)</label>
+                    <input type="text" name="encrypted_aes_key" id="encrypted_aes_key" class="form-control" required>
+                </div>
+
+                <button type="submit" class="btn btn-success">🔓 Déchiffrer la clé AES</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- FORMULAIRE 2 : Vérification PDF -->
+    <div class="card">
+        <div class="card-header bg-secondary text-white">2️⃣ Télécharger le document PDF à vérifier</div>
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="verify_pdf">
+
+                <div class="mb-3">
+                    <label for="pdf_file" class="form-label">Document PDF chiffré</label>
+                    <input type="file" name="pdf_file" id="pdf_file" class="form-control" accept=".pdf" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary">📄 Vérifier l'intégrité du PDF</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

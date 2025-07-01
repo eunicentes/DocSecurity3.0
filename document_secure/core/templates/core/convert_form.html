@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Convertisseur en PDF</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Configuration Tailwind pour activer le mode dark avec classes
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            neon: {
+              green: '#00ffcc',
+              blue: '#00ccff',
+            },
+            darkBg: '#0f172a',
+            darkCard: '#1e293b',
+          },
+        },
+      },
+    };
+  </script>
+</head>
+
+<body class="dark bg-darkBg min-h-screen flex items-center justify-center font-sans">
+  <div class="bg-darkCard shadow-lg rounded-xl p-8 w-full max-w-md border border-neon-blue">
+    <h2 class="text-2xl font-bold mb-6 text-center text-neon-green">Convertir un fichier en PDF</h2>
+
+    {% if error %}
+      <div class="bg-red-800/30 text-red-400 p-3 rounded mb-4 border border-red-500">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data" class="space-y-6">
+      {% csrf_token %}
+      <div>
+        <label class="block font-medium mb-2 text-gray-300">Choisir un fichier (Image / XML)</label>
+        <input 
+          type="file" 
+          name="uploaded_file" 
+          accept=".png,.jpg,.jpeg,.bmp,.xml"
+          id="fileInput"
+          class="block w-full text-sm text-gray-100 bg-gray-800 border border-gray-600 rounded px-3 py-2 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-neon-blue file:text-white hover:file:bg-blue-500 transition duration-300 ease-in-out"
+          required>
+        <p id="fileName" class="text-sm text-neon-green mt-2"></p>
+      </div>
+
+      <div>
+        <button type="submit"
+          class="w-full bg-neon-green text-darkCard py-2 rounded hover:bg-green-400 transition duration-300 font-semibold shadow-lg">
+          🚀 Convertir en PDF
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    // Afficher le nom du fichier sélectionné
+    const fileInput = document.getElementById('fileInput');
+    const fileName = document.getElementById('fileName');
+
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length > 0) {
+        fileName.textContent = `Fichier sélectionné : ${fileInput.files[0].name}`;
+      } else {
+        fileName.textContent = '';
+      }
+    });
+  </script>
+</body>
+</html>

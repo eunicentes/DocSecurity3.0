@@ -1,0 +1,33 @@
+<!-- templates/core/sign_document.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Signer et verrouiller un PDF</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+    <div class="container py-5">
+        <h2 class="text-center mb-4">🔐 Signature et verrouillage d’un document PDF</h2>
+
+        {% if error %}
+            <div class="alert alert-danger">{{ error }}</div>
+        {% endif %}
+
+        <form method="post" enctype="multipart/form-data" class="bg-white p-4 rounded shadow">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="pdf_file" class="form-label">📄 Sélectionner le document PDF :</label>
+                <input type="file" name="pdf_file" id="pdf_file" accept="application/pdf" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="rsa_public_key" class="form-label">🔑 Clé publique RSA (PEM) :</label>
+                <textarea name="rsa_public_key" id="rsa_public_key" class="form-control" rows="5" placeholder="-----BEGIN PUBLIC KEY-----&#10;...&#10;-----END PUBLIC KEY-----" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">🚀 Signer et verrouiller</button>
+        </form>
+    </div>
+</body>
+</html>
